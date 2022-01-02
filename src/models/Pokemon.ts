@@ -7,7 +7,7 @@ export default class Pokemon {
     weight?: number;
     type?: string;
     move?: string;
-    stats?: [String];
+    stats?: Stats;
 
     constructor (
         id: number,
@@ -16,7 +16,7 @@ export default class Pokemon {
         height?: number,
         weight?: number,
         move?: string,
-        stats?: [String],
+        stats?: Stats,
     ) {
         this.id = id;
         this.name = name;
@@ -25,6 +25,31 @@ export default class Pokemon {
         this.weight = weight;
         this.move = move;
         this.stats = stats;
+    }
+}
+
+export class Stats {
+    hp: number;
+    attack: number;
+    defense: number;
+    specialAttack: number;
+    specialDefense: number;
+    speed: number;
+
+    constructor (
+        hp: number,
+        attack: number,
+        defense: number,
+        specialAttack: number,
+        specialDefense: number,
+        speed: number,
+    ) {
+        this.hp = hp;
+        this.attack = attack;
+        this.defense = defense;
+        this.specialAttack = specialAttack;
+        this.specialDefense = specialDefense;
+        this.speed = speed;
     }
 }
 

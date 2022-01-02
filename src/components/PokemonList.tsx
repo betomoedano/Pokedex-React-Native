@@ -10,7 +10,7 @@ import {
   decrementByAmount,
 } from '../features/counter/counter-slice';
 import {PokemonClient} from 'pokenode-ts';
-import Pokemon from '../models/Pokemon';
+import Pokemon, {Stats} from '../models/Pokemon';
 import {
   StyleSheet,
   View,
@@ -37,6 +37,14 @@ const PokemonList = () => {
         .getPokemonById(counter)
         .then(pokemon => {
           console.log(pokemon);
+          const currentPokemonStats: Stats = {
+            hp: pokemon.stats[0].base_stat,
+            attack: pokemon.stats[1].base_stat,
+            defense: pokemon.stats[2].base_stat,
+            specialAttack: pokemon.stats[3].base_stat,
+            specialDefense: pokemon.stats[4].base_stat,
+            speed: pokemon.stats[5].base_stat,
+          };
           const newPokemon: Pokemon = {
             id: pokemon.id,
             name: pokemon.name,
@@ -45,6 +53,7 @@ const PokemonList = () => {
             weight: pokemon.weight,
             type: pokemon?.types[0]?.type?.name?.toString(),
             move: pokemon?.moves[0]?.move?.name?.toString(),
+            stats: currentPokemonStats,
           };
           dispatch(setPokemons(newPokemon));
         })
@@ -69,6 +78,61 @@ const PokemonList = () => {
   };
   const handleDecrementByAmount = (value: number) => {
     dispatch(decrementByAmount(value));
+  };
+
+  const StatLine = (props: {
+    number: number | undefined;
+    type: string | undefined;
+  }) => {
+    return (
+      <View
+        style={{
+          width: props.number,
+          marginVertical: 6,
+          height: 5,
+          marginLeft: 10,
+          borderRadius: 5,
+          backgroundColor:
+            props.type === 'grass'
+              ? Colors.grass
+              : props.type === 'fire'
+              ? Colors.fire
+              : props.type === 'water'
+              ? Colors.water
+              : props.type === 'electric'
+              ? Colors.electric
+              : props.type === 'ice'
+              ? Colors.ice
+              : props.type === 'fighting'
+              ? Colors.fighting
+              : props.type === 'poison'
+              ? Colors.poison
+              : props.type === 'ground'
+              ? Colors.ground
+              : props.type === 'flying'
+              ? Colors.flying
+              : props.type === 'psychic'
+              ? Colors.psychic
+              : props.type === 'bug'
+              ? Colors.bug
+              : props.type === 'rock'
+              ? Colors.rock
+              : props.type === 'ghost'
+              ? Colors.ghost
+              : props.type === 'dragon'
+              ? Colors.dragon
+              : props.type === 'dark'
+              ? Colors.dark
+              : props.type === 'steel'
+              ? Colors.steel
+              : props.type === 'fairy'
+              ? Colors.fairy
+              : props.type === 'normal'
+              ? Colors.normal
+              : Colors.black,
+        }}
+      />
+    );
   };
 
   return (
@@ -125,7 +189,10 @@ const PokemonList = () => {
       <SafeAreaView>
         {/* name and number */}
         <View style={styles.row}>
-          <Text style={styles.pokemonName}>{currentPokemon.name} </Text>
+          <Text style={styles.pokemonName}>
+            {currentPokemon.name.charAt(0).toUpperCase() +
+              currentPokemon.name.slice(1)}{' '}
+          </Text>
           <Text
             style={[
               styles.pokemonName,
@@ -223,7 +290,7 @@ const PokemonList = () => {
                 {currentPokemon.weight
                   ?.toString()
                   .slice(0, currentPokemon.weight.toString().length - 1)}
-                ,
+                .
                 {currentPokemon.weight
                   ?.toString()
                   .slice(
@@ -243,7 +310,7 @@ const PokemonList = () => {
                 {currentPokemon.height
                   ?.toString()
                   .slice(0, currentPokemon.height.toString().length - 1)}
-                ,
+                .
                 {currentPokemon.height
                   ?.toString()
                   .slice(
@@ -263,6 +330,79 @@ const PokemonList = () => {
                 style={{color: Colors.mediumGray, fontSize: 12, marginTop: 10}}>
                 Move
               </Text>
+            </View>
+          </View>
+        </View>
+        {/* Pokemon Abilities */}
+        <View>
+          <Text
+            style={{
+              textAlign: 'center',
+              fontWeight: 'bold',
+              fontSize: 20,
+              marginTop: 20,
+              color: Colors.mediumGray,
+            }}>
+            Base Stats
+          </Text>
+          <View
+            style={[
+              styles.row,
+              {
+                justifyContent: 'flex-start',
+                marginHorizontal: 30,
+                marginTop: 20,
+              },
+            ]}>
+            <View style={{alignItems: 'flex-end', marginRight: 10}}>
+              <Text>HP</Text>
+              <Text>Attack</Text>
+              <Text>Defense</Text>
+              <Text>Special Attack</Text>
+              <Text>Special Defence</Text>
+              <Text>Speed</Text>
+            </View>
+            <View
+              style={{
+                height: 100,
+                width: 2,
+                backgroundColor: Colors.lightGray,
+                marginRight: 10,
+              }}
+            />
+            <View>
+              <Text>{currentPokemon.stats?.hp} </Text>
+              <Text>{currentPokemon.stats?.attack} </Text>
+              <Text>{currentPokemon.stats?.defense}</Text>
+              <Text>{currentPokemon.stats?.specialAttack}</Text>
+              <Text>{currentPokemon.stats?.specialDefense}</Text>
+              <Text>{currentPokemon.stats?.speed}</Text>
+            </View>
+            <View>
+              <StatLine
+                number={currentPokemon.stats?.hp}
+                type={currentPokemon.type}
+              />
+              <StatLine
+                number={currentPokemon.stats?.attack}
+                type={currentPokemon.type}
+              />
+              <StatLine
+                number={currentPokemon.stats?.defense}
+                type={currentPokemon.type}
+              />
+              <StatLine
+                number={currentPokemon.stats?.specialAttack}
+                type={currentPokemon.type}
+              />
+              <StatLine
+                number={currentPokemon.stats?.specialDefense}
+                type={currentPokemon.type}
+              />
+              <StatLine
+                number={currentPokemon.stats?.speed}
+                type={currentPokemon.type}
+              />
             </View>
           </View>
         </View>
