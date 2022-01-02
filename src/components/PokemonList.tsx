@@ -44,6 +44,7 @@ const PokemonList = () => {
             height: pokemon.height,
             weight: pokemon.weight,
             type: pokemon?.types[0]?.type?.name?.toString(),
+            move: pokemon?.moves[0]?.move?.name?.toString(),
           };
           dispatch(setPokemons(newPokemon));
         })
@@ -56,7 +57,6 @@ const PokemonList = () => {
 
   const handleNextButton = () => {
     dispatch(increment());
-    // fetchPokemon()
   };
   const handlePrevButton = () => {
     dispatch(decrement());
@@ -121,6 +121,7 @@ const PokemonList = () => {
         style={styles.pokeball}
         source={require('../images/Pokeball.png')}
       />
+      <View style={styles.whiteSheet} />
       <SafeAreaView>
         {/* name and number */}
         <View style={styles.row}>
@@ -134,11 +135,7 @@ const PokemonList = () => {
           </Text>
         </View>
         {/* Image and buttons */}
-        <View
-          style={[
-            styles.row,
-            {height: 250, borderColor: 'red', borderWidth: 1},
-          ]}>
+        <View style={[styles.row, {height: 250}]}>
           <TouchableOpacity style={styles.button} onPress={handlePrevButton}>
             <Text style={styles.buttonText}>⬅️</Text>
           </TouchableOpacity>
@@ -196,9 +193,78 @@ const PokemonList = () => {
                   : Colors.black,
             },
           ]}>
-          <Text style={[styles.pokemonName, {fontSize: 20}]}>
+          <Text
+            style={{
+              color: Colors.white,
+              paddingHorizontal: 10,
+              fontWeight: 'bold',
+              fontSize: 16,
+              textAlign: 'center',
+            }}>
             {currentPokemon.type}
           </Text>
+        </View>
+        {/* Pokemon About */}
+        <View>
+          <Text
+            style={{
+              textAlign: 'center',
+              fontWeight: 'bold',
+              fontSize: 20,
+              marginTop: 20,
+              color: Colors.mediumGray,
+            }}>
+            About
+          </Text>
+          <View style={[styles.row, {justifyContent: 'center', marginTop: 20}]}>
+            <View style={{alignItems: 'center', marginHorizontal: 10}}>
+              <Text>
+                ⚖️{' '}
+                {currentPokemon.weight
+                  ?.toString()
+                  .slice(0, currentPokemon.weight.toString().length - 1)}
+                ,
+                {currentPokemon.weight
+                  ?.toString()
+                  .slice(
+                    currentPokemon.weight.toString().length - 1,
+                    currentPokemon.weight.toString().length,
+                  )}{' '}
+                kg
+              </Text>
+              <Text
+                style={{color: Colors.mediumGray, fontSize: 12, marginTop: 10}}>
+                Weight
+              </Text>
+            </View>
+            <View style={{alignItems: 'center', marginHorizontal: 10}}>
+              <Text>
+                📏{' '}
+                {currentPokemon.height
+                  ?.toString()
+                  .slice(0, currentPokemon.height.toString().length - 1)}
+                ,
+                {currentPokemon.height
+                  ?.toString()
+                  .slice(
+                    currentPokemon.height.toString().length - 1,
+                    currentPokemon.height.toString().length,
+                  )}{' '}
+                m
+              </Text>
+              <Text
+                style={{color: Colors.mediumGray, fontSize: 12, marginTop: 10}}>
+                Height
+              </Text>
+            </View>
+            <View style={{alignItems: 'center', marginHorizontal: 10}}>
+              <Text>{currentPokemon.move}</Text>
+              <Text
+                style={{color: Colors.mediumGray, fontSize: 12, marginTop: 10}}>
+                Move
+              </Text>
+            </View>
+          </View>
         </View>
       </SafeAreaView>
     </View>
@@ -252,7 +318,18 @@ const styles = StyleSheet.create({
     color: Colors.black,
   },
   pokemonTypeContainer: {
-    height: 50,
+    height: 30,
     borderRadius: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  whiteSheet: {
+    position: 'absolute',
+    bottom: 30,
+    left: 10,
+    borderRadius: 10,
+    backgroundColor: Colors.white,
+    width: '95%',
+    height: '60%',
   },
 });

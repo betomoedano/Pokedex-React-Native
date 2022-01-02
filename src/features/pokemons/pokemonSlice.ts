@@ -15,6 +15,7 @@ const initialState: Pokemon = {
     height: 0,
     weight: 0,
     type: '',
+    move: '',
     };
 
 // create the slice
@@ -29,6 +30,7 @@ const pokemonSlice = createSlice({
             state.height = action.payload.height;
             state.weight = action.payload.weight;
             state.type = action.payload.type;
+            state.move = action.payload.move;
         },
     }
 });
