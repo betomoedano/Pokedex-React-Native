@@ -203,16 +203,31 @@ const PokemonList = () => {
         </View>
         {/* Image and buttons */}
         <View style={[styles.row, {height: 250}]}>
-          <TouchableOpacity style={styles.button} onPress={handlePrevButton}>
-            <Text style={styles.buttonText}>⬅️</Text>
-          </TouchableOpacity>
+          <View>
+            <TouchableOpacity style={styles.button} onPress={handlePrevButton}>
+              <Text style={styles.buttonText}>⬅️</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => handleDecrementByAmount(100)}>
+              <Text style={styles.buttonText}>⏮</Text>
+            </TouchableOpacity>
+          </View>
+
           <Image
             style={styles.pokemonImage}
             source={{uri: currentPokemon.image}}
           />
-          <TouchableOpacity style={styles.button} onPress={handleNextButton}>
-            <Text style={styles.buttonText}>➡️</Text>
-          </TouchableOpacity>
+          <View>
+            <TouchableOpacity style={styles.button} onPress={handleNextButton}>
+              <Text style={styles.buttonText}>➡️</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => handleIncrementByAmount(100)}>
+              <Text style={styles.buttonText}>⏭</Text>
+            </TouchableOpacity>
+          </View>
         </View>
         {/* Pokemon type */}
         <View
