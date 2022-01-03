@@ -2,7 +2,7 @@ import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import Pokemon from '../../models/Pokemon';
 
 const initialState: Pokemon = {
-  id: 0,
+  id: 1,
   name: '',
   image: '',
   height: 0,
@@ -17,14 +17,14 @@ const initialState: Pokemon = {
     specialDefense: 0,
     speed: 0,
   },
+  color: 'white',
 };
 
-// create the slice
 const pokemonSlice = createSlice({
   name: 'pokemon',
   initialState,
   reducers: {
-    setPokemons: (state, action: PayloadAction<Pokemon>) => {
+    setPokemon: (state, action: PayloadAction<Pokemon>) => {
       state.id = action.payload.id;
       state.name = action.payload.name;
       state.image = action.payload.image;
@@ -33,9 +33,10 @@ const pokemonSlice = createSlice({
       state.type = action.payload.type;
       state.move = action.payload.move;
       state.stats = action.payload.stats;
+      state.color = action.payload.color;
     },
   },
 });
 
-export const {setPokemons} = pokemonSlice.actions;
+export const {setPokemon} = pokemonSlice.actions;
 export default pokemonSlice.reducer;

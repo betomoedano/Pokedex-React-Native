@@ -1,16 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useEffect} from 'react';
-import {useAppDispatch, useAppSelector} from '../app/hooks';
-import {setPokemons} from '../features/pokemons/pokemonSlice';
-import {
-  increment,
-  decrement,
-  incrementByAmount,
-  reset,
-  decrementByAmount,
-} from '../features/counter/counter-slice';
-import {PokemonClient} from 'pokenode-ts';
-import Pokemon, {Stats} from '../models/Pokemon';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -22,13 +11,22 @@ import {
   SafeAreaView,
   StatusBar,
 } from 'react-native';
+import {PokemonClient} from 'pokenode-ts';
+import {useAppDispatch, useAppSelector} from '../app/hooks';
+import {setPokemon} from '../features/pokemon/pokemonSlice';
+import {
+  increment,
+  decrement,
+  incrementByAmount,
+  decrementByAmount,
+} from '../features/counter/counterSlice';
+import Pokemon, {Stats} from '../models/Pokemon';
 import {Colors} from '../colors';
 
 const PokemonList = () => {
+  const dispatch = useAppDispatch();
   const currentPokemon = useAppSelector(state => state.pokemon);
   const counter = useAppSelector(state => state.counter.value);
-  const dispatch = useAppDispatch();
-  const isDarkMode = useColorScheme() === 'dark';
 
   useEffect(() => {
     const fetchPokemon = async () => {
@@ -36,7 +34,6 @@ const PokemonList = () => {
       await api
         .getPokemonById(counter)
         .then(pokemon => {
-          console.log(pokemon);
           const currentPokemonStats: Stats = {
             hp: pokemon.stats[0].base_stat,
             attack: pokemon.stats[1].base_stat,
@@ -54,8 +51,46 @@ const PokemonList = () => {
             type: pokemon?.types[0]?.type?.name?.toString(),
             move: pokemon?.moves[0]?.move?.name?.toString(),
             stats: currentPokemonStats,
+            color:
+              pokemon?.types[0]?.type?.name?.toString() === 'grass'
+                ? Colors.grass
+                : pokemon?.types[0]?.type?.name?.toString() === 'fire'
+                ? Colors.fire
+                : pokemon?.types[0]?.type?.name?.toString() === 'water'
+                ? Colors.water
+                : pokemon?.types[0]?.type?.name?.toString() === 'electric'
+                ? Colors.electric
+                : pokemon?.types[0]?.type?.name?.toString() === 'ice'
+                ? Colors.ice
+                : pokemon?.types[0]?.type?.name?.toString() === 'fighting'
+                ? Colors.fighting
+                : pokemon?.types[0]?.type?.name?.toString() === 'poison'
+                ? Colors.poison
+                : pokemon?.types[0]?.type?.name?.toString() === 'ground'
+                ? Colors.ground
+                : pokemon?.types[0]?.type?.name?.toString() === 'flying'
+                ? Colors.flying
+                : pokemon?.types[0]?.type?.name?.toString() === 'psychic'
+                ? Colors.psychic
+                : pokemon?.types[0]?.type?.name?.toString() === 'bug'
+                ? Colors.bug
+                : pokemon?.types[0]?.type?.name?.toString() === 'rock'
+                ? Colors.rock
+                : pokemon?.types[0]?.type?.name?.toString() === 'ghost'
+                ? Colors.ghost
+                : pokemon?.types[0]?.type?.name?.toString() === 'dragon'
+                ? Colors.dragon
+                : pokemon?.types[0]?.type?.name?.toString() === 'dark'
+                ? Colors.dark
+                : pokemon?.types[0]?.type?.name?.toString() === 'steel'
+                ? Colors.steel
+                : pokemon?.types[0]?.type?.name?.toString() === 'fairy'
+                ? Colors.fairy
+                : pokemon?.types[0]?.type?.name?.toString() === 'normal'
+                ? Colors.normal
+                : Colors.black,
           };
-          dispatch(setPokemons(newPokemon));
+          dispatch(setPokemon(newPokemon));
         })
         .catch(err => {
           console.log(err);
@@ -73,16 +108,13 @@ const PokemonList = () => {
   const handleIncrementByAmount = (value: number) => {
     dispatch(incrementByAmount(value));
   };
-  const handleReset = () => {
-    dispatch(reset());
-  };
   const handleDecrementByAmount = (value: number) => {
     dispatch(decrementByAmount(value));
   };
 
   const StatLine = (props: {
     number: number | undefined;
-    type: string | undefined;
+    color: string | undefined;
   }) => {
     return (
       <View
@@ -92,95 +124,15 @@ const PokemonList = () => {
           height: 5,
           marginLeft: 10,
           borderRadius: 5,
-          backgroundColor:
-            props.type === 'grass'
-              ? Colors.grass
-              : props.type === 'fire'
-              ? Colors.fire
-              : props.type === 'water'
-              ? Colors.water
-              : props.type === 'electric'
-              ? Colors.electric
-              : props.type === 'ice'
-              ? Colors.ice
-              : props.type === 'fighting'
-              ? Colors.fighting
-              : props.type === 'poison'
-              ? Colors.poison
-              : props.type === 'ground'
-              ? Colors.ground
-              : props.type === 'flying'
-              ? Colors.flying
-              : props.type === 'psychic'
-              ? Colors.psychic
-              : props.type === 'bug'
-              ? Colors.bug
-              : props.type === 'rock'
-              ? Colors.rock
-              : props.type === 'ghost'
-              ? Colors.ghost
-              : props.type === 'dragon'
-              ? Colors.dragon
-              : props.type === 'dark'
-              ? Colors.dark
-              : props.type === 'steel'
-              ? Colors.steel
-              : props.type === 'fairy'
-              ? Colors.fairy
-              : props.type === 'normal'
-              ? Colors.normal
-              : Colors.black,
+          backgroundColor: props.color,
         }}
       />
     );
   };
 
   return (
-    <View
-      style={[
-        styles.container,
-        {
-          backgroundColor:
-            currentPokemon.type === 'grass'
-              ? Colors.grass
-              : currentPokemon.type === 'fire'
-              ? Colors.fire
-              : currentPokemon.type === 'water'
-              ? Colors.water
-              : currentPokemon.type === 'electric'
-              ? Colors.electric
-              : currentPokemon.type === 'ice'
-              ? Colors.ice
-              : currentPokemon.type === 'fighting'
-              ? Colors.fighting
-              : currentPokemon.type === 'poison'
-              ? Colors.poison
-              : currentPokemon.type === 'ground'
-              ? Colors.ground
-              : currentPokemon.type === 'flying'
-              ? Colors.flying
-              : currentPokemon.type === 'psychic'
-              ? Colors.psychic
-              : currentPokemon.type === 'bug'
-              ? Colors.bug
-              : currentPokemon.type === 'rock'
-              ? Colors.rock
-              : currentPokemon.type === 'ghost'
-              ? Colors.ghost
-              : currentPokemon.type === 'dragon'
-              ? Colors.dragon
-              : currentPokemon.type === 'dark'
-              ? Colors.dark
-              : currentPokemon.type === 'steel'
-              ? Colors.steel
-              : currentPokemon.type === 'fairy'
-              ? Colors.fairy
-              : currentPokemon.type === 'normal'
-              ? Colors.normal
-              : Colors.black,
-        },
-      ]}>
-      <StatusBar barStyle="light-content" />
+    <View style={[styles.container, {backgroundColor: currentPokemon.color}]}>
+      <StatusBar barStyle={'light-content'} />
       <Image
         style={styles.pokeball}
         source={require('../images/Pokeball.png')}
@@ -191,7 +143,7 @@ const PokemonList = () => {
         <View style={styles.row}>
           <Text style={styles.pokemonName}>
             {currentPokemon.name.charAt(0).toUpperCase() +
-              currentPokemon.name.slice(1)}{' '}
+              currentPokemon.name.slice(1)}
           </Text>
           <Text
             style={[
@@ -213,7 +165,6 @@ const PokemonList = () => {
               <Text style={styles.buttonText}>⏮</Text>
             </TouchableOpacity>
           </View>
-
           <Image
             style={styles.pokemonImage}
             source={{uri: currentPokemon.image}}
@@ -233,47 +184,7 @@ const PokemonList = () => {
         <View
           style={[
             styles.pokemonTypeContainer,
-            {
-              alignSelf: 'center',
-              backgroundColor:
-                currentPokemon.type === 'grass'
-                  ? Colors.grass
-                  : currentPokemon.type === 'fire'
-                  ? Colors.fire
-                  : currentPokemon.type === 'water'
-                  ? Colors.water
-                  : currentPokemon.type === 'electric'
-                  ? Colors.electric
-                  : currentPokemon.type === 'ice'
-                  ? Colors.ice
-                  : currentPokemon.type === 'fighting'
-                  ? Colors.fighting
-                  : currentPokemon.type === 'poison'
-                  ? Colors.poison
-                  : currentPokemon.type === 'ground'
-                  ? Colors.ground
-                  : currentPokemon.type === 'flying'
-                  ? Colors.flying
-                  : currentPokemon.type === 'psychic'
-                  ? Colors.psychic
-                  : currentPokemon.type === 'bug'
-                  ? Colors.bug
-                  : currentPokemon.type === 'rock'
-                  ? Colors.rock
-                  : currentPokemon.type === 'ghost'
-                  ? Colors.ghost
-                  : currentPokemon.type === 'dragon'
-                  ? Colors.dragon
-                  : currentPokemon.type === 'dark'
-                  ? Colors.dark
-                  : currentPokemon.type === 'steel'
-                  ? Colors.steel
-                  : currentPokemon.type === 'fairy'
-                  ? Colors.fairy
-                  : currentPokemon.type === 'normal'
-                  ? Colors.normal
-                  : Colors.black,
-            },
+            {alignSelf: 'center', backgroundColor: currentPokemon.color},
           ]}>
           <Text
             style={{
@@ -294,7 +205,7 @@ const PokemonList = () => {
               fontWeight: 'bold',
               fontSize: 20,
               marginTop: 20,
-              color: Colors.mediumGray,
+              color: currentPokemon.color,
             }}>
             About
           </Text>
@@ -356,7 +267,7 @@ const PokemonList = () => {
               fontWeight: 'bold',
               fontSize: 20,
               marginTop: 20,
-              color: Colors.mediumGray,
+              color: currentPokemon.color,
             }}>
             Base Stats
           </Text>
@@ -396,27 +307,27 @@ const PokemonList = () => {
             <View>
               <StatLine
                 number={currentPokemon.stats?.hp}
-                type={currentPokemon.type}
+                color={currentPokemon.color}
               />
               <StatLine
                 number={currentPokemon.stats?.attack}
-                type={currentPokemon.type}
+                color={currentPokemon.color}
               />
               <StatLine
                 number={currentPokemon.stats?.defense}
-                type={currentPokemon.type}
+                color={currentPokemon.color}
               />
               <StatLine
                 number={currentPokemon.stats?.specialAttack}
-                type={currentPokemon.type}
+                color={currentPokemon.color}
               />
               <StatLine
                 number={currentPokemon.stats?.specialDefense}
-                type={currentPokemon.type}
+                color={currentPokemon.color}
               />
               <StatLine
                 number={currentPokemon.stats?.speed}
-                type={currentPokemon.type}
+                color={currentPokemon.color}
               />
             </View>
           </View>
@@ -434,10 +345,6 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: Colors.fire,
   },
-  text: {
-    fontSize: 30,
-    color: '#000',
-  },
   pokeball: {
     position: 'absolute',
     right: 20,
@@ -449,11 +356,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'left',
     marginLeft: 20,
-  },
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
   },
   pokemonImage: {
     width: 200,
@@ -472,6 +374,11 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: Colors.black,
   },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
   pokemonTypeContainer: {
     height: 30,
     borderRadius: 50,
@@ -482,7 +389,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 30,
     left: 10,
-    borderRadius: 10,
+    borderRadius: 20,
     backgroundColor: Colors.white,
     width: '95%',
     height: '60%',
