@@ -1,9 +1,3 @@
-/* eslint-disable semi */
-/* eslint-disable eol-last */
-/* eslint-disable comma-dangle */
-/* eslint-disable quotes */
-/* eslint-disable prettier/prettier */
-
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import Pokemon from '../../models/Pokemon';
 
